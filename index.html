@@ -30,7 +30,7 @@
       backdrop-filter: blur(10px);
     }
 
-    nav a { color: #cbd5e1; text-decoration: none; font-weight: 600; letter-spacing: 0.6px; position: relative; }
+    nav a { color: #cbd5e1; text-decoration: none; font-weight: 600; }
     nav a:hover { color: gold; }
 
     header {
@@ -38,8 +38,6 @@
       padding: 80px 20px;
       background: linear-gradient(135deg, #bfa14a, #ffd700, #c0c0c0);
       color: #0a0f1c;
-      position: relative;
-      overflow: hidden;
     }
 
     h1 {
@@ -61,115 +59,83 @@
 
     footer { margin-top: 90px; text-align: center; padding: 30px; }
 
-    /* FLASH EFFECT */
-    @keyframes flash {
-      0%, 100% { background-color: rgba(0,0,0,0.9); }
-      50% { background-color: rgba(255,0,0,0.9); }
+    /* FLASH */
+    @keyframes flash { 0%,100%{background:#000;}50%{background:#300;} }
+
+    /* SCREEN SHAKE */
+    @keyframes shake {
+      0% { transform: translate(0,0); }
+      25% { transform: translate(3px,-3px); }
+      50% { transform: translate(-3px,3px); }
+      75% { transform: translate(3px,3px); }
+      100% { transform: translate(0,0); }
     }
 
     /* SCANLINES */
     .scanlines::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.05),
-        rgba(255,255,255,0.05) 2px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events: none;
-      z-index: 10000;
-      animation: scanmove 6s linear infinite;
+      content:"";
+      position:absolute;
+      width:100%;height:100%;
+      background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 4px);
+      pointer-events:none;
+      animation:scanmove 4s linear infinite;
     }
 
-    @keyframes scanmove {
-      from { transform: translateY(0); }
-      to { transform: translateY(100px); }
-    }
+    @keyframes scanmove { from{transform:translateY(0);} to{transform:translateY(100px);} }
 
-    /* HACK POPUP */
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: flash 0.8s infinite;
+      top:0;left:0;
+      width:100%;height:100%;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      animation: flash 0.6s infinite, shake 0.2s infinite;
     }
 
     .popup {
-      background: black;
-      border: 2px solid red;
-      padding: 40px;
-      border-radius: 12px;
-      text-align: left;
-      box-shadow: 0 0 40px red;
-      max-width: 500px;
-      font-family: 'Orbitron', monospace;
-      color: #00ff9c;
-      position: relative;
+      background:black;
+      border:2px solid red;
+      padding:30px;
+      border-radius:12px;
+      box-shadow:0 0 40px red;
+      max-width:600px;
+      font-family:'Orbitron', monospace;
+      color:#00ff9c;
     }
 
-    /* GLITCH TEXT */
     .glitch {
-      color: red;
-      position: relative;
-      animation: glitch 1s infinite;
+      color:red;
+      animation:glitch 0.6s infinite;
     }
 
     @keyframes glitch {
-      0% { text-shadow: 2px 0 red, -2px 0 blue; }
-      20% { text-shadow: -2px 0 red, 2px 0 blue; }
-      40% { text-shadow: 2px 2px red, -2px -2px blue; }
-      60% { text-shadow: -2px 2px red, 2px -2px blue; }
-      80% { text-shadow: 2px 0 red, -2px 0 blue; }
-      100% { text-shadow: none; }
+      0%{text-shadow:2px 0 red,-2px 0 blue;}
+      50%{text-shadow:-2px 0 red,2px 0 blue;}
+      100%{text-shadow:none;}
     }
 
     .terminal {
-      font-size: 0.9rem;
-      line-height: 1.4;
-      height: 120px;
-      overflow: hidden;
-      white-space: pre-line;
+      font-size:0.85rem;
+      height:140px;
+      overflow:hidden;
+      white-space:pre-line;
     }
 
-    .progress {
-      margin-top: 20px;
-      height: 10px;
-      background: #111;
-      border: 1px solid red;
-      border-radius: 6px;
-      overflow: hidden;
+    .files {
+      font-size:0.7rem;
+      color:#0f0;
+      height:80px;
+      overflow:hidden;
+      white-space:pre-line;
     }
 
-    .bar {
-      height: 100%;
-      width: 0%;
-      background: red;
-      animation: load 10s linear forwards;
-    }
+    .progress { margin-top:10px; height:8px; background:#111; border:1px solid red; }
+    .bar { height:100%; width:0%; background:red; animation:load 10s linear forwards; }
+    @keyframes load { from{width:0%} to{width:100%} }
 
-    @keyframes load {
-      from { width: 0%; }
-      to { width: 100%; }
-    }
-
-    .popup button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: gray;
-      border: none;
-      color: white;
-      cursor: not-allowed;
-    }
+    .popup button { margin-top:10px; padding:8px; background:gray; color:white; }
 
   </style>
 </head>
@@ -204,62 +170,41 @@
     <div class="popup">
       <h2 class="glitch">⚠ SYSTEM BREACH DETECTED ⚠</h2>
       <div class="terminal" id="terminal"></div>
+      <div class="files" id="files"></div>
       <div class="progress"><div class="bar"></div></div>
       <button id="closeBtn">Locked...</button>
     </div>
   </div>
 
   <script>
-    const lines = [
-      "Initializing breach protocol...",
-      "Bypassing firewall...",
-      "Injecting payload...",
-      "Accessing system files...",
-      "Decrypting user data...",
-      "Uploading to remote server...",
-      "Finalizing breach..."
-    ];
+    const lines = ["Initializing breach...","Bypassing firewall...","Injecting payload...","Decrypting files..."];
+    const fakeFiles = ["C:/Users/Admin/passwords.txt","C:/System32/config.sys","/root/secure.db","/var/log/auth.log","C:/Banking/data.csv"];
 
-    function typeEffect(element, lines, speed=50) {
-      let i = 0, j = 0;
-      function type() {
-        if (i < lines.length) {
-          if (j < lines[i].length) {
-            element.innerHTML += lines[i].charAt(j);
-            j++;
-            setTimeout(type, speed);
-          } else {
-            element.innerHTML += "\n";
-            i++; j = 0;
-            setTimeout(type, speed);
-          }
-        }
-      }
-      type();
-    }
+    function typeEffect(el, arr, speed=40){let i=0,j=0;function t(){if(i<arr.length){if(j<arr[i].length){el.innerHTML+=arr[i][j++];setTimeout(t,speed);}else{el.innerHTML+="\n";i++;j=0;setTimeout(t,speed);}}}t();}
 
-    setTimeout(() => {
-      const overlay = document.getElementById('overlay');
-      const btn = document.getElementById('closeBtn');
-      const terminal = document.getElementById('terminal');
+    function scrollFiles(el){setInterval(()=>{const file=fakeFiles[Math.floor(Math.random()*fakeFiles.length)];el.innerHTML+=file+"\n";el.scrollTop=el.scrollHeight;},200);}
 
-      overlay.style.display = 'flex';
-      typeEffect(terminal, lines);
+    setTimeout(()=>{
+      const o=document.getElementById('overlay');
+      const btn=document.getElementById('closeBtn');
+      const term=document.getElementById('terminal');
+      const files=document.getElementById('files');
 
-      btn.disabled = true;
+      o.style.display='flex';
+      typeEffect(term,lines);
+      scrollFiles(files);
 
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = "Close";
-        btn.style.cursor = "pointer";
-        btn.onclick = () => overlay.style.display = 'none';
-      }, 15000);
+      btn.disabled=true;
 
-      setTimeout(() => {
-        overlay.style.display = 'none';
-      }, 25000);
+      setTimeout(()=>{
+        btn.disabled=false;
+        btn.textContent='Close';
+        btn.onclick=()=>o.style.display='none';
+      },15000);
 
-    }, 10000);
+      setTimeout(()=>{o.style.display='none';},25000);
+
+    },10000);
   </script>
 
 </body>
