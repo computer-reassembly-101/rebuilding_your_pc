@@ -4,65 +4,138 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PC Reassembly Guide - Home</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #0b1220;
-      color: #e6edf3;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0f1b2e, #05080f);
+      color: #e5e7eb;
+      overflow-x: hidden;
     }
+
     nav {
       position: sticky;
       top: 0;
       display: flex;
       justify-content: center;
-      gap: 28px;
-      padding: 16px 20px;
-      background: rgba(2, 6, 23, 0.9);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid #1f2937;
+      gap: 30px;
+      padding: 18px 20px;
+      background: rgba(10, 15, 28, 0.95);
+      border-bottom: 1px solid rgba(192,192,192,0.2);
+      backdrop-filter: blur(10px);
     }
-    nav a {
-      color: #e6edf3;
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 0.4px;
-      transition: color 0.2s ease;
-    }
-    nav a:hover {
-      color: #38bdf8;
-    }
+
+    nav a { color: #cbd5e1; text-decoration: none; font-weight: 600; letter-spacing: 0.6px; position: relative; }
+    nav a:hover { color: gold; }
+
     header {
       text-align: center;
-      padding: 90px 20px 60px;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #bfa14a, #ffd700, #c0c0c0);
+      color: #0a0f1c;
+      position: relative;
+      overflow: hidden;
     }
+
     h1 {
-      font-size: 2.8rem;
-      margin-bottom: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      margin: 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
-    .content {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
+
+    .content { max-width: 900px; margin: auto; padding: 30px 20px; }
+
     .card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      border-radius: 16px;
-      padding: 30px;
-      line-height: 1.6;
-      font-size: 1.1rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     }
-    footer {
-      margin-top: 80px;
-      text-align: center;
-      padding: 25px;
-      border-top: 1px solid #1f2937;
+
+    footer { margin-top: 90px; text-align: center; padding: 30px; }
+
+    /* FLASH EFFECT */
+    @keyframes flash {
+      0%, 100% { background-color: rgba(0,0,0,0.9); }
+      50% { background-color: rgba(255,0,0,0.9); }
+    }
+
+    /* HACK POPUP */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: flash 0.8s infinite;
+    }
+
+    .popup {
+      background: black;
+      border: 2px solid red;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: left;
+      box-shadow: 0 0 40px red;
+      max-width: 500px;
+      font-family: 'Orbitron', monospace;
+      color: #00ff9c;
+    }
+
+    .terminal {
       font-size: 0.9rem;
-      color: #94a3b8;
+      line-height: 1.4;
+      height: 120px;
+      overflow: hidden;
+      white-space: pre-line;
     }
+
+    .progress {
+      margin-top: 20px;
+      height: 10px;
+      background: #111;
+      border: 1px solid red;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: red;
+      animation: load 10s linear forwards;
+    }
+
+    @keyframes load {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    .popup h2 {
+      color: red;
+      text-align: center;
+    }
+
+    .popup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: gray;
+      border: none;
+      color: white;
+      cursor: not-allowed;
+    }
+
   </style>
 </head>
 <body>
@@ -91,6 +164,68 @@
   <footer>
     <h3>Copyright Jameson Johnson 2026</h3>
   </footer>
+
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <h2>⚠ SYSTEM BREACH DETECTED ⚠</h2>
+      <div class="terminal" id="terminal"></div>
+      <div class="progress"><div class="bar"></div></div>
+      <button id="closeBtn">Locked...</button>
+    </div>
+  </div>
+
+  <script>
+    const lines = [
+      "Initializing breach protocol...",
+      "Bypassing firewall...",
+      "Injecting payload...",
+      "Accessing system files...",
+      "Decrypting user data...",
+      "Uploading to remote server...",
+      "Finalizing breach..."
+    ];
+
+    function typeEffect(element, lines, speed=50) {
+      let i = 0, j = 0;
+      function type() {
+        if (i < lines.length) {
+          if (j < lines[i].length) {
+            element.innerHTML += lines[i].charAt(j);
+            j++;
+            setTimeout(type, speed);
+          } else {
+            element.innerHTML += "\n";
+            i++; j = 0;
+            setTimeout(type, speed);
+          }
+        }
+      }
+      type();
+    }
+
+    setTimeout(() => {
+      const overlay = document.getElementById('overlay');
+      const btn = document.getElementById('closeBtn');
+      const terminal = document.getElementById('terminal');
+
+      overlay.style.display = 'flex';
+      typeEffect(terminal, lines);
+
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = "Close";
+        btn.style.cursor = "pointer";
+        btn.onclick = () => overlay.style.display = 'none';
+      }, 15000);
+
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 25000);
+
+    }, 10000);
+  </script>
 
 </body>
 </html>
