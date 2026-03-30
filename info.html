@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Important Info</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0f1b2e, #05080f);
+      color: #e5e7eb;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 18px;
+      background: rgba(10, 15, 28, 0.95);
+    }
+
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover { color: gold; }
+
+    header {
+      text-align: center;
+      padding: 70px 20px;
+      background: linear-gradient(135deg, gold, silver);
+      color: black;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: rgba(15, 23, 42, 0.9);
+      margin: 20px 0;
+      padding: 25px;
+      border-left: 5px solid gold;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    li::before {
+      content: "⚠";
+      position: absolute;
+      left: -25px;
+      color: gold;
+      font-size: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="how.html">Reassembly Steps - How</a>
+  <a href="why.html">Reassembly Steps - Why</a>
+  <a href="info.html">Important Info</a>
+</nav>
+
+<header>
+  <h1>Important Information</h1>
+</header>
+
+<div class="content">
+  <ul>
+    <li>
+      ALWAYS wear an antistatic wrist strap- this will ensure that your charge remains equal to the computer when you connect it to an unpainted metal surface of the PC to ensure no damage to interior components.
+    </li>
+
+    <li>
+      NEVER attempt to service the PCU (Power Control Unit) by yourself. There is enough charge in the PCU to injure of kill a human. NEVER take it apart other to try to fix the inside of the PCU.
+    </li>
+
+    <li>
+      Organise your workspace. Ensure that screws are in labeled bins so you don't lose any, and that your work surface is clean and neat.
+    </li>
+
+     <li>
+       Photogragh all steps. If you are ever uncertain if you assembled the computer properly, you can always refer back to your pictures. Take pictures while taking the PC apart as well
+    </li>
+  </ul>
+</div>
+
+<footer>
+  <h3>Copyright Jameson Johnson 2026</h3>
+</footer>
+
+</body>
+</html>
